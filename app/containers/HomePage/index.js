@@ -138,7 +138,6 @@ export function HomePage({ loading, error, videos, loadVideos }) {
         <Typography variant="h6" noWrap className={classes.title}>
           Recommandations
         </Typography>
-        <Button onClick={loadVideos}>test</Button>
         <Grid container className={classes.grid}>
           <Grid item xs={12}>
             <Grid container justify="center" spacing={spacing}>
