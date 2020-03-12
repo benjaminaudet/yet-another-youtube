@@ -36,7 +36,6 @@ const useStyles = makeStyles(theme => ({
   },
   appBar: {
     backgroundColor: theme.palette.background.paper,
-    marginBottom: '3%',
   },
   search: {
     position: 'relative',
@@ -158,7 +157,7 @@ export default function PrimarySearchAppBar() {
 
   return (
     <div className={classes.grow}>
-      <AppBar position="static" className={classes.appBar}>
+      <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
           <img className={classes.logo} src={youtubeLogo} alt="logo" />
           <div className={classes.search}>
