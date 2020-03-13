@@ -32,7 +32,8 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     fontSize: "14px !important",
-    fontWeight: 500
+    fontWeight: 500,
+    cursor: "pointer"
   },
   smallInfos: {
     fontSize: "14px !important",
@@ -79,6 +80,10 @@ function VideoItem({ video }) {
     return viewNumber < 1000
       ? viewNumber
       : `${Math.floor(viewNumber / 1000)} k`;
+  }
+
+  function onClickTitle() {
+    window.open(video.link, "_blank");
   }
 
   function computeRenderDateAdded(dateAdd) {
@@ -146,7 +151,7 @@ function VideoItem({ video }) {
           <Avatar xs={12} />
         </Grid>
         <Grid item>
-          <Typography className={classes.title} noWrap>
+          <Typography onClick={onClickTitle} className={classes.title} noWrap>
             {video.title}
           </Typography>
           <Box>
