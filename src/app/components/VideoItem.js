@@ -1,28 +1,51 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles';
-import moment from 'moment';
-import PropTypes from 'prop-types';
-import { Typography, Card, Grid, Avatar, CardMedia } from '@material-ui/core';
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { makeStyles } from "@material-ui/core/styles";
+import moment from "moment";
+import PropTypes from "prop-types";
+import {
+  Typography,
+  Card,
+  Grid,
+  Avatar,
+  CardMedia,
+  Box
+} from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   paper: {
     height: 191,
     width: 344,
     backgroundColor: theme.palette.background.paper,
-    [theme.breakpoints.down('sm')]: {
-      width: '100%',
-    },
+    [theme.breakpoints.down("sm")]: {
+      width: "100%"
+    }
   },
   cardWrapper: {
-    [theme.breakpoints.down('sm')]: {
-      width: '100%',
-    },
+    [theme.breakpoints.down("sm")]: {
+      width: "100%"
+    }
   },
   gridInfos: {
     color: theme.palette.text.primary,
-    marginTop: '1vh',
+    marginTop: "1vh"
   },
+  title: {
+    fontSize: "14px !important",
+    fontWeight: 500
+  },
+  smallInfos: {
+    fontSize: "14px !important",
+    color: theme.palette.text.secondary
+  },
+  separatorSmallInfos: {
+    margin: "0px 4px",
+    fontSize: "14px !important"
+  },
+  thumb: {
+    objectFit: "contain",
+    width: "100%"
+  }
 }));
 
 function VideoItem({ video }) {
@@ -65,30 +88,30 @@ function VideoItem({ video }) {
     const durationScale = {
       years: {
         value: duration.asYears(),
-        translation: 'ans',
+        translation: "ans"
       },
       months: {
         value: duration.asMonths(),
-        translation: 'mois',
+        translation: "mois"
       },
       days: {
         value: duration.asDays(),
-        translation: 'jours',
+        translation: "jours"
       },
       hours: {
         value: duration.asHours(),
-        translation: 'heures',
+        translation: "heures"
       },
       minutes: {
         value: duration.asMinutes(),
-        translation: 'minutes',
+        translation: "minutes"
       },
       seconds: {
         value: duration.asSeconds(),
-        translation: 'secondes',
-      },
+        translation: "secondes"
+      }
     };
-    let goodScale = '';
+    let goodScale = "";
     Object.keys(durationScale).every(key => {
       if (durationScale[key].value >= 1) {
         goodScale = key;
@@ -108,6 +131,7 @@ function VideoItem({ video }) {
           onMouseEnter={onMouseEnterCarousel}
           onMouseOut={onMouseOutCarousel}
           src={thumbImg}
+          className={classes.thumb}
           alt="cover"
         />
       </Card>
@@ -121,15 +145,28 @@ function VideoItem({ video }) {
         <Grid item>
           <Avatar xs={12} />
         </Grid>
-        <Grid item xs zeroMinWidth>
-          <Typography noWrap>{video.title}</Typography>
-          <Typography>Auteur</Typography>
-          <Typography>
-            {computeRenderViewNumber(video.viewNumber)} vues
+        <Grid item>
+          <Typography className={classes.title} noWrap>
+            {video.title}
           </Typography>
-          <Typography>
-            Il y a {computeRenderDateAdded(video.dateAdd)}
-          </Typography>
+          <Box>
+            <Typography className={classes.smallInfos}>Auteur</Typography>
+            <Grid container>
+              <Grid item>
+                <Typography className={classes.smallInfos}>
+                  {computeRenderViewNumber(video.viewNumber)} vues
+                </Typography>
+              </Grid>
+              <Box className={classes.separatorSmallInfos} alignItems="top">
+                •
+              </Box>
+              <Grid item>
+                <Typography className={classes.smallInfos}>
+                  Il y a {computeRenderDateAdded(video.dateAdd)}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Box>
         </Grid>
       </Grid>
     </Grid>
@@ -137,7 +174,7 @@ function VideoItem({ video }) {
 }
 
 VideoItem.propTypes = {
-  video: PropTypes.any,
+  video: PropTypes.any
 };
 
 export default VideoItem;
