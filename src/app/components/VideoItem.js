@@ -9,10 +9,12 @@ import {
   Avatar,
   CardMedia,
   Box,
+  Chip,
 } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import computeRenderDateAdded from '../utils/computeRenderDateAdded';
 import computeRenderNumber from '../utils/computeRenderNumber';
+import computeRenderVideoLength from '../utils/computeRenderVideoLength';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -48,6 +50,21 @@ const useStyles = makeStyles(theme => ({
   thumb: {
     objectFit: 'contain',
     width: '100%',
+  },
+  videoLength: {
+    position: 'absolute',
+    marginTop: 164,
+    marginLeft: 294,
+    background: 'rgba(0, 0, 0, 0.8)',
+    fontSize: '0.8rem',
+    fontWeight: '500',
+    borderRadius: 2,
+    height: '1rem',
+    color: theme.palette.text.primary,
+    [theme.breakpoints.down('sm')]: {
+      marginBottom: 0,
+      right: 30,
+    },
   },
 }));
 
@@ -87,6 +104,11 @@ function VideoItem({ video }) {
   return (
     <Grid item className={classes.cardWrapper}>
       <Card xs={12} className={classes.paper}>
+        <Chip
+          size="small"
+          className={classes.videoLength}
+          label={computeRenderVideoLength(video.videoLength)}
+        />
         <img
           onMouseEnter={onMouseEnterCarousel}
           onMouseOut={onMouseOutCarousel}
