@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
-import moment from 'moment';
 import PropTypes from 'prop-types';
 import {
   Typography,
@@ -12,6 +11,8 @@ import {
   Box,
 } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
+import computeRenderDateAdded from '../utils/computeRenderDateAdded';
+import computeRenderNumber from '../utils/computeRenderNumber';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -75,64 +76,12 @@ function VideoItem({ video }) {
     clearInterval(carouselInterval);
   }
 
-  function computeRenderViewNumber(viewNumber) {
-    if (viewNumber > 1000000) {
-      return `${(viewNumber / 1000000).toFixed(1)} M`;
-    }
-    return viewNumber < 1000
-      ? viewNumber
-      : `${Math.floor(viewNumber / 1000)} k`;
-  }
-
   function onClickImage() {
     history.push(`/video/${video.id}`);
   }
 
   function onClickTitle() {
     window.open(video.link, '_blank');
-  }
-
-  function computeRenderDateAdded(dateAdd) {
-    const dateAdded = moment(new Date(dateAdd));
-    const dateNow = moment(new Date());
-    const duration = moment.duration(dateNow.diff(dateAdded));
-    const durationScale = {
-      years: {
-        value: duration.asYears(),
-        translation: 'ans',
-      },
-      months: {
-        value: duration.asMonths(),
-        translation: 'mois',
-      },
-      days: {
-        value: duration.asDays(),
-        translation: 'jours',
-      },
-      hours: {
-        value: duration.asHours(),
-        translation: 'heures',
-      },
-      minutes: {
-        value: duration.asMinutes(),
-        translation: 'minutes',
-      },
-      seconds: {
-        value: duration.asSeconds(),
-        translation: 'secondes',
-      },
-    };
-    let goodScale = '';
-    Object.keys(durationScale).every(key => {
-      if (durationScale[key].value >= 1) {
-        goodScale = key;
-        return false;
-      }
-      return true;
-    });
-    return `${dateNow.diff(dateAdded, goodScale)} ${
-      durationScale[goodScale].translation
-    }`;
   }
 
   return (
@@ -166,7 +115,7 @@ function VideoItem({ video }) {
             <Grid container>
               <Grid item>
                 <Typography className={classes.smallInfos}>
-                  {computeRenderViewNumber(video.viewNumber)} vues
+                  {computeRenderNumber(video.viewNumber)} vues
                 </Typography>
               </Grid>
               <Box className={classes.separatorSmallInfos} alignItems="top">
