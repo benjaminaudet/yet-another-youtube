@@ -26,10 +26,11 @@ import computeRenderNumber from '../utils/computeRenderNumber';
 const useStyles = makeStyles(theme => ({
   box: {
     marginTop: '10vh',
+    marginLeft: '4vw',
   },
   paper: {
-    maxHeight: 668,
-    maxWidth: 1188,
+    maxHeight: 720,
+    maxWidth: 1280,
     backgroundColor: theme.palette.background.paper,
     [theme.breakpoints.down('sm')]: {
       width: '100%',
@@ -83,7 +84,7 @@ export default function VideoPage(props) {
       history.push('/');
       return;
     }
-    const sizesVideo = { width: '100%', height: 668 };
+    const sizesVideo = { width: '100%', height: 720 };
     const id = parseInt(props.match.params.id);
     const videoToDisplay = Object.assign(
       {},
