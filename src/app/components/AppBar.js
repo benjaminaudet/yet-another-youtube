@@ -12,6 +12,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import youtubeLogo from '../assets/images/youtube.svg';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -22,6 +23,7 @@ const useStyles = makeStyles(theme => ({
   },
   logo: {
     width: 80,
+    cursor: 'pointer',
   },
   title: {
     color: theme.palette.text.primary,
@@ -88,6 +90,11 @@ export default function PrimarySearchAppBar() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const history = useHistory();
+
+  function onClickLogo() {
+    history.push('/');
+  }
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -154,7 +161,12 @@ export default function PrimarySearchAppBar() {
     <div className={classes.grow}>
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
-          <img className={classes.logo} src={youtubeLogo} alt="logo" />
+          <img
+            onClick={onClickLogo}
+            className={classes.logo}
+            src={youtubeLogo}
+            alt="logo"
+          />
           <div className={classes.search}>
             <ButtonGroup aria-label="outlined primary button group">
               <InputBase

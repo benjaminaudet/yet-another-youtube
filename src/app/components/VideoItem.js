@@ -1,56 +1,58 @@
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { makeStyles } from "@material-ui/core/styles";
-import moment from "moment";
-import PropTypes from "prop-types";
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { makeStyles } from '@material-ui/core/styles';
+import moment from 'moment';
+import PropTypes from 'prop-types';
 import {
   Typography,
   Card,
   Grid,
   Avatar,
   CardMedia,
-  Box
-} from "@material-ui/core";
+  Box,
+} from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   paper: {
     height: 191,
     width: 344,
     backgroundColor: theme.palette.background.paper,
-    [theme.breakpoints.down("sm")]: {
-      width: "100%"
-    }
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
   },
   cardWrapper: {
-    [theme.breakpoints.down("sm")]: {
-      width: "100%"
-    }
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
   },
   gridInfos: {
     color: theme.palette.text.primary,
-    marginTop: "1vh"
+    marginTop: '1vh',
   },
   title: {
-    fontSize: "14px !important",
+    fontSize: '14px !important',
     fontWeight: 500,
-    cursor: "pointer"
+    cursor: 'pointer',
   },
   smallInfos: {
-    fontSize: "14px !important",
-    color: theme.palette.text.secondary
+    fontSize: '14px !important',
+    color: theme.palette.text.secondary,
   },
   separatorSmallInfos: {
-    margin: "0px 4px",
-    fontSize: "14px !important"
+    margin: '0px 4px',
+    fontSize: '14px !important',
   },
   thumb: {
-    objectFit: "contain",
-    width: "100%"
-  }
+    objectFit: 'contain',
+    width: '100%',
+  },
 }));
 
 function VideoItem({ video }) {
   const classes = useStyles();
+  const history = useHistory();
   let thumbIndex = 0;
   let [carouselInterval, setCarouselInterval] = useState(0);
   let [thumbImg, setThumbImg] = useState(video.thumbs[thumbIndex]);
@@ -82,8 +84,12 @@ function VideoItem({ video }) {
       : `${Math.floor(viewNumber / 1000)} k`;
   }
 
+  function onClickImage() {
+    history.push(`/video/${video.id}`);
+  }
+
   function onClickTitle() {
-    window.open(video.link, "_blank");
+    window.open(video.link, '_blank');
   }
 
   function computeRenderDateAdded(dateAdd) {
@@ -93,30 +99,30 @@ function VideoItem({ video }) {
     const durationScale = {
       years: {
         value: duration.asYears(),
-        translation: "ans"
+        translation: 'ans',
       },
       months: {
         value: duration.asMonths(),
-        translation: "mois"
+        translation: 'mois',
       },
       days: {
         value: duration.asDays(),
-        translation: "jours"
+        translation: 'jours',
       },
       hours: {
         value: duration.asHours(),
-        translation: "heures"
+        translation: 'heures',
       },
       minutes: {
         value: duration.asMinutes(),
-        translation: "minutes"
+        translation: 'minutes',
       },
       seconds: {
         value: duration.asSeconds(),
-        translation: "secondes"
-      }
+        translation: 'secondes',
+      },
     };
-    let goodScale = "";
+    let goodScale = '';
     Object.keys(durationScale).every(key => {
       if (durationScale[key].value >= 1) {
         goodScale = key;
@@ -135,6 +141,7 @@ function VideoItem({ video }) {
         <img
           onMouseEnter={onMouseEnterCarousel}
           onMouseOut={onMouseOutCarousel}
+          onClick={onClickImage}
           src={thumbImg}
           className={classes.thumb}
           alt="cover"
@@ -179,7 +186,7 @@ function VideoItem({ video }) {
 }
 
 VideoItem.propTypes = {
-  video: PropTypes.any
+  video: PropTypes.any,
 };
 
 export default VideoItem;
