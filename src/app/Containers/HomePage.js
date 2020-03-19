@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Container, Typography, Grid } from '@material-ui/core/';
 import VideoItem from '../components/VideoItem';
-import { selectVideos, getVideos } from './videoSlice';
+import { selectVideos, selectSearchFilter, getVideos } from './videoSlice';
 
 const useStyles = makeStyles(theme => ({
   grid: {
@@ -35,6 +35,10 @@ export default function HomePage(props) {
   const classes = useStyles();
   let offset = 0;
 
+  function getVideosWithSearch() {
+    dispatch(getVideos(offset, true));
+  }
+
   const isBottom = el => {
     return el.getBoundingClientRect().bottom <= window.innerHeight;
   };
@@ -43,7 +47,7 @@ export default function HomePage(props) {
     const wrappedElement = document.getElementById('root');
     if (isBottom(wrappedElement)) {
       offset++;
-      dispatch(getVideos(offset));
+      getVideosWithSearch();
       document.removeEventListener('scroll', this);
     }
   };

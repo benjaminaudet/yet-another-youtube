@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -8,11 +8,14 @@ import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import Card from '@material-ui/core/Card';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import youtubeLogo from '../assets/images/youtube.svg';
-import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useHistory, useLocation } from 'react-router-dom';
+import { getVideos, setSearchFilter } from '../Containers/videoSlice';
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -88,13 +91,32 @@ const useStyles = makeStyles(theme => ({
 
 export default function PrimarySearchAppBar() {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const dispatch = useDispatch();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [search, setSearch] = useState('');
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const history = useHistory();
+  const location = useLocation();
 
-  function onClickLogo() {
+  const onClickLogo = () => {
+    if (location.pathname === '/') {
+      window.location.reload();
+      return;
+    }
+    window.location.reload();
     history.push('/');
-  }
+  };
+
+  const handleSearchOnChange = evt => {
+    setSearch(evt.target.value);
+  };
+
+  const handleSearchOnSubmit = evt => {
+    if (evt.key === 'Enter' || evt === 'button-submit') {
+      dispatch(setSearchFilter(search));
+      dispatch(getVideos(0));
+    }
+  };
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -127,8 +149,9 @@ export default function PrimarySearchAppBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem>
+        <Card>hello</Card>
+      </MenuItem>
     </Menu>
   );
 
@@ -175,10 +198,13 @@ export default function PrimarySearchAppBar() {
                   root: classes.inputRoot,
                   input: classes.inputInput,
                 }}
+                value={search}
+                onChange={handleSearchOnChange}
+                onKeyPress={handleSearchOnSubmit}
                 disableRipple={true}
                 inputProps={{ 'aria-label': 'search' }}
               />
-              <Button>
+              <Button onClick={() => handleSearchOnSubmit('button-submit')}>
                 <SearchIcon />
               </Button>
             </ButtonGroup>
