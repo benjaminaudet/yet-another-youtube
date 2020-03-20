@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import InputBase from '@material-ui/core/InputBase';
-import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import Card from '@material-ui/core/Card';
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  InputBase,
+  Button,
+  ButtonGroup,
+} from '@material-ui/core/';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
@@ -16,6 +15,7 @@ import youtubeLogo from '../assets/images/youtube.svg';
 import { useDispatch } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { getVideos, setSearchFilter } from '../Containers/videoSlice';
+import AuthDrawer from './AuthDrawer';
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -92,9 +92,8 @@ const useStyles = makeStyles(theme => ({
 export default function PrimarySearchAppBar() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [anchorEl, setAnchorEl] = useState(null);
   const [search, setSearch] = useState('');
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const [openDrawer, setOpenDrawer] = useState(true);
   const history = useHistory();
   const location = useLocation();
 
@@ -113,75 +112,27 @@ export default function PrimarySearchAppBar() {
 
   const handleSearchOnSubmit = evt => {
     if (evt.key === 'Enter' || evt === 'button-submit') {
+      if (location.pathname !== '/') {
+        history.push('/');
+      }
       dispatch(setSearchFilter(search));
       dispatch(getVideos(0));
     }
   };
 
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  const handleProfileMenuOpen = event => {
-    setAnchorEl(event.currentTarget);
+  const toggleDrawer = open => event => {
+    if (
+      event.type === 'keydown' &&
+      (event.key === 'Tab' || event.key === 'Shift')
+    ) {
+      return;
+    }
+    setOpenDrawer(open);
   };
-
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
-  const handleMobileMenuOpen = event => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
-
-  const menuId = 'primary-search-account-menu';
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem>
-        <Card>hello</Card>
-      </MenuItem>
-    </Menu>
-  );
-
-  const mobileMenuId = 'primary-search-account-menu-mobile';
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
-  );
 
   return (
     <div className={classes.grow}>
+      <AuthDrawer openDrawer={openDrawer} toggleDrawer={toggleDrawer} />
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
           <img
@@ -211,32 +162,17 @@ export default function PrimarySearchAppBar() {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
+            <IconButton onClick={toggleDrawer(true)} color="inherit">
               <AccountCircle />
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>
-            <IconButton
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
+            <IconButton onClick={toggleDrawer(true)} color="inherit">
               <MoreIcon />
             </IconButton>
           </div>
         </Toolbar>
       </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
     </div>
   );
 }
