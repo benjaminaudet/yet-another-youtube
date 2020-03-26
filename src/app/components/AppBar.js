@@ -7,6 +7,7 @@ import {
   InputBase,
   Button,
   ButtonGroup,
+  Box,
 } from '@material-ui/core/';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -93,7 +94,7 @@ export default function PrimarySearchAppBar() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [search, setSearch] = useState('');
-  const [openDrawer, setOpenDrawer] = useState(true);
+  const [openDrawer, setOpenDrawer] = useState(false);
   const history = useHistory();
   const location = useLocation();
 
@@ -131,7 +132,7 @@ export default function PrimarySearchAppBar() {
   };
 
   return (
-    <div className={classes.grow}>
+    <Box className={classes.grow}>
       <AuthDrawer openDrawer={openDrawer} toggleDrawer={toggleDrawer} />
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
@@ -141,7 +142,7 @@ export default function PrimarySearchAppBar() {
             src={youtubeLogo}
             alt="logo"
           />
-          <div className={classes.search}>
+          <Box className={classes.search}>
             <ButtonGroup aria-label="outlined primary button group">
               <InputBase
                 placeholder="Rechercher"
@@ -159,20 +160,20 @@ export default function PrimarySearchAppBar() {
                 <SearchIcon />
               </Button>
             </ButtonGroup>
-          </div>
-          <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
+          </Box>
+          <Box className={classes.grow} />
+          <Box className={classes.sectionDesktop}>
             <IconButton onClick={toggleDrawer(true)} color="inherit">
               <AccountCircle />
             </IconButton>
-          </div>
-          <div className={classes.sectionMobile}>
+          </Box>
+          <Box className={classes.sectionMobile}>
             <IconButton onClick={toggleDrawer(true)} color="inherit">
               <MoreIcon />
             </IconButton>
-          </div>
+          </Box>
         </Toolbar>
       </AppBar>
-    </div>
+    </Box>
   );
 }

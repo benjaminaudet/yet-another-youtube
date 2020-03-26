@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  Drawer,
   Container,
   Typography,
   TextField,
@@ -26,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function AuthDrawer(props) {
+export default function SignUp(props) {
   const classes = useStyles();
 
   const [form, setForm] = useState({
@@ -157,9 +156,15 @@ export default function AuthDrawer(props) {
           />
         </Box>
         <Box class="field-container">
-          <Grid container justify="center" spacing={1}>
+          <Grid
+            container
+            justify="center"
+            direction="column"
+            alignItems="center"
+            spacing={1}
+          >
             <Grid item>
-              <Button onClick={submit} variant="contained" color="primary">
+              <Button onClick={submit} variant="contained" color="secondary">
                 S'inscrire
               </Button>
             </Grid>

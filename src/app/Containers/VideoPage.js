@@ -15,13 +15,16 @@ import {
   Card,
   Avatar,
   Divider,
+  Chip,
 } from '@material-ui/core/';
 import { ThumbUp, ThumbDown } from '@material-ui/icons/';
 import VideoItem from '../components/VideoItem';
 import { selectVideos, getVideos } from './videoSlice';
 import { useHistory } from 'react-router-dom';
-import computeRenderDateAdded from '../utils/computeRenderDateAdded';
+import moment from 'moment';
 import computeRenderNumber from '../utils/computeRenderNumber';
+
+moment.locale('fr');
 
 const useStyles = makeStyles(theme => ({
   box: {
@@ -80,6 +83,7 @@ export default function VideoPage(props) {
   const classes = useStyles();
 
   useEffect(() => {
+    moment.locale('fr');
     if (videos.length === 0) {
       history.push('/');
       return;
@@ -136,7 +140,9 @@ export default function VideoPage(props) {
                   </Box>
                   <Grid item>
                     <Typography className={classes.smallInfos}>
-                      Il y a {computeRenderDateAdded(video.dateAdd)}
+                      {moment(new Date(video.dateAdd))
+                        .locale('fr')
+                        .format('Do MMMM YYYY')}
                     </Typography>
                   </Grid>
                   <Grid item className={classes.vote}>
@@ -172,6 +178,16 @@ export default function VideoPage(props) {
               <Divider />
             </Grid>
           </Grid>
+        </Grid>
+        <Grid container direction="row" justify="flex-start" spacing={1}>
+          {video.tags &&
+            video.tags.map(tag => {
+              return (
+                <Grid item>
+                  <Chip key={tag} label={tag} />
+                </Grid>
+              );
+            })}
         </Grid>
       </Box>
     </Container>

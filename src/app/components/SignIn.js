@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  Drawer,
   Container,
   Typography,
   TextField,
@@ -27,8 +26,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function SignIn(props) {
-  const { switch } = props;
   const classes = useStyles();
+  const [submitable, setSubmitable] = useState(true);
 
   const [form, setForm] = useState({
     email: {
@@ -36,14 +35,32 @@ export default function SignIn(props) {
       error: false,
       displayError: false,
       helperText: 'E-mail non valide',
+      conditionError: (value) => !EmailValidator.validate(value)
     },
     password: {
       value: '',
       error: false,
       displayError: false,
       helperText: 'Le mot de passe doit faire 8 caractères minimum',
+      conditionError: (value) => value.length < 8
     },
   });
+
+  const checkNoErrors = () => {
+    let noError = true;
+    Object.keys(form).forEach(field => {
+      if (form[field].value === '') {
+        noError = false;
+        return true;
+      }
+      if (form[field].error) {
+        noError = false;
+        return true;
+      }
+      return false;
+    });
+    return noError;
+  };
 
   const handleChange = event => {
     let error = false;
@@ -53,14 +70,13 @@ export default function SignIn(props) {
       form[event.target.id].error &&
       form[event.target.id].value !== ''
     ) {
-      console.log('wtf');
       displayError = true;
     }
     if (event.target.value !== '') {
       if (event.target.id === 'email') {
-        error = !EmailValidator.validate(event.target.value);
+        error = ;
       } else if (event.target.id === 'password') {
-        error = event.target.value.length < 8;
+        error = ;
       }
     }
     setForm({
@@ -73,6 +89,10 @@ export default function SignIn(props) {
       },
     });
   };
+
+  useEffect(() => {
+    setSubmitable(checkNoErrors());
+  }, [form]);
 
   const handleDisplayError = event => {
     if (form[event.target.id].error) {
@@ -89,7 +109,7 @@ export default function SignIn(props) {
   };
 
   const submit = event => {
-    if (event.type === 'click' || event.key === 'Enter') {
+    if ((event.type === 'click' || event.key === 'Enter') && submitable) {
       console.log('submit');
     }
   };
@@ -139,13 +159,13 @@ export default function SignIn(props) {
             spacing={1}
           >
             <Grid item>
-              <Button onClick={submit} variant="contained" color="secondary">
+              <Button
+                onClick={submit}
+                disabled={!submitable}
+                variant="contained"
+                color="secondary"
+              >
                 Se connecter
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button onClick={switch} color="secondary">
-                S'inscrire
               </Button>
             </Grid>
           </Grid>
