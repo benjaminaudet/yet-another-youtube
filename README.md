@@ -1,11 +1,15 @@
 # Yet Another Youtube
 
-# Usage
+# Use it locally for development purposes
 
-`git clone https://github.com/benjaminaudet/yet-another-youtube.git`
+`$ git clone https://github.com/benjaminaudet/yet-another-youtube.git`
+`$ cd yet-another-youtube`
+`$ npm install`
+`$ npm run start`
 
-`cd yet-another-youtube`
+# Use for production
 
-`npm install`
-
-a`npm run start`
+`$ git clone https://github.com/benjaminaudet/yet-another-youtube.git`
+`$ cd yet-another-youtube`
+`$ npm install`
+`$ npm run build`
