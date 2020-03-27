@@ -17,6 +17,7 @@ import {
   Divider,
   Chip,
 } from '@material-ui/core/';
+import Rating from '@material-ui/lab/Rating';
 import { ThumbUp, ThumbDown } from '@material-ui/icons/';
 import VideoItem from '../components/VideoItem';
 import { selectVideos, getVideos } from './videoSlice';
@@ -170,6 +171,17 @@ export default function VideoPage(props) {
                         >
                           {video.downVote}
                         </Typography>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item className={classes.vote}>
+                    <Grid container alignItems="center">
+                      <Grid item>
+                        <Rating
+                          name="simple-controlled"
+                          value={Math.round(video.rating)}
+                          readOnly
+                        />
                       </Grid>
                     </Grid>
                   </Grid>
