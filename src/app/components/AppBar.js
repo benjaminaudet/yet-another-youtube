@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   AppBar,
@@ -13,6 +13,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import youtubeLogo from '../assets/images/youtube.svg';
+import youtubeLogoMobile from '../assets/images/youtube-mobile.svg';
 import { useDispatch } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { getVideos, setSearchFilter } from '../Containers/videoSlice';
@@ -26,8 +27,11 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(2),
   },
   logo: {
-    width: 80,
+    width: 30,
     cursor: 'pointer',
+    [theme.breakpoints.up('sm')]: {
+      width: 80,
+    },
   },
   title: {
     color: theme.palette.text.primary,
@@ -46,14 +50,11 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       backgroundColor: theme.palette.background.default,
     },
-    marginRight: theme.spacing(2),
-    width: '100%',
+    width: 'auto',
+    marginLeft: '15%',
     [theme.breakpoints.up('sm')]: {
+      marginRight: theme.spacing(2),
       marginLeft: '25%',
-      width: 'auto',
-    },
-    [theme.breakpoints.down('xs')]: {
-      display: 'none',
     },
   },
   searchIcon: {
@@ -95,8 +96,21 @@ export default function PrimarySearchAppBar() {
   const dispatch = useDispatch();
   const [search, setSearch] = useState('');
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [logo, setLogo] = useState(window.innerWidth >= 599 ? youtubeLogo : youtubeLogoMobile);
   const history = useHistory();
   const location = useLocation();
+
+  const onResize = () => {
+    if (window.innerWidth >= 599) {
+      setLogo(youtubeLogo);
+    } else {
+      setLogo(youtubeLogoMobile);
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener("resize", onResize);
+  }, [])
 
   const onClickLogo = () => {
     if (location.pathname === '/') {
@@ -139,7 +153,7 @@ export default function PrimarySearchAppBar() {
           <img
             onClick={onClickLogo}
             className={classes.logo}
-            src={youtubeLogo}
+            src={logo}
             alt="logo"
           />
           <Box className={classes.search}>

@@ -136,8 +136,8 @@ export default function AuthDrawer(props) {
     return switchTypeAuth === 'signup' ? (
       <Form form={formSignUp} />
     ) : (
-      <Form form={formSignIn} />
-    );
+        <Form form={formSignIn} />
+      );
   };
 
   return (
